@@ -1,0 +1,39 @@
+.box > h1 {
+  font-size: 60px;
+}
+
+#container {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+#content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.box {
+  background-color: aqua;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#send-box {
+  margin-right: 40px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  text-align: center;
+  padding: 10px 20px;
+}
+
+input, button {
+  margin: 10px 0px;
+}
+
+/*# sourceMappingURL=application.css.map */
