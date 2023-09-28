@@ -10,9 +10,7 @@ function fetchImage() {
 }
 
 let new_image;
-
 let usersAndImages = [];
-
 let formData;
 let emailInput;
 
@@ -20,46 +18,55 @@ document.addEventListener("load", fetchImage());
 
 $("#new-image-btn").on("click", () => { fetchImage() });
 
+function createListItem(eName, image) {
+    let formattedId = eName.replaceAll(".", "-");
+    let newItem = document.createElement("li");
+    newItem.innerHTML = "<img src='" + image + "'>" ;
+    document.getElementById(formattedId + "-list").appendChild(newItem);
+}
+
 function assembleNewEmail(eName) {
     // Create Div container
     let formattedId = eName.replaceAll(".", "-");
     console.log(formattedId)
     let newDiv = document.createElement("div");
     newDiv.setAttribute("id", formattedId);
+    newDiv.setAttribute("class", "user-container");
     document.getElementById("recieve-box").appendChild(newDiv);
 
     // Create header for new email image list
-    let newHeader = document.createElement("h1");
-    document.getElementById(formattedId).appendChild(newHeader);
-    document.getElementById(formattedId).innerText = eName;
+    document.getElementById(formattedId).innerHTML = "<h1>" + eName + "</h1>";
    
+    // Create UL list for images 
+    let newUL = document.createElement("ul");
+    newUL.setAttribute("id", formattedId + "-list");
+    newUL.setAttribute("class", "user-list");
+    document.getElementById(formattedId).appendChild(newUL);
+
+    // Create image list item 
+    createListItem(eName, new_image);
 
 }
 
 function addElement(eInput) {
     if (usersAndImages.length == 0) {
-        alert("empty list")
+        assembleNewEmail(eInput)
+        fetchImage()
     }
     else {
         for (i = 0; i < usersAndImages.length; i++) {
-            console.table(usersAndImages);
-            console.log(i);
-            console.log(usersAndImages[i][0]);
+            //console.table(usersAndImages);
+            //console.log(i);
+            console.log("user images: " + usersAndImages[i][0]);
             if (usersAndImages[i][0] == eInput) {
-                alert("matches"); 
+                createListItem(eInput, new_image)
+                fetchImage();
+                console.log(usersAndImages.length);
                 return;
-            } else {
-                alert("doesnt match");
-                
-                /*
-                let newList = document.createElement("ul");
-                let newItem = document.createElement("li");
-                newListsetAttribute("id", eInput); 
-                newItem.innerHTML("<img src="+ eInput + ">")*/
-
-            }
+            } 
         }
         assembleNewEmail(eInput)
+        fetchImage()
 
     }
 }
