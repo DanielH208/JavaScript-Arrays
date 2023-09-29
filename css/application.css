@@ -1,5 +1,5 @@
-.box > h1 {
-  font-size: 60px;
+#send-box, #recieve-box-container {
+  font-size: 30px;
 }
 
 #container {
@@ -14,7 +14,7 @@
   flex-wrap: wrap;
 }
 
-.box {
+.box, #recieve-box-container {
   background-color: aqua;
   padding: 20px;
   border-radius: 10px;
