@@ -4,7 +4,6 @@ function fetchImage() {
     .then (result => {
         new_image = result.url;
         document.getElementById("image-slot").src = new_image;
-        console.log(new_image);
     })
     .catch(err => console.log(err))
 }
@@ -17,6 +16,12 @@ let emailInput;
 document.addEventListener("load", fetchImage());
 
 $("#new-image-btn").on("click", () => { fetchImage() });
+
+function removeHTML(id) {
+    let parent = document.getElementById(id);
+    parent.innerHTML = "";
+}
+
 
 function createListItem(eName, image) {
     let formattedId = eName.replaceAll(".", "-");
@@ -46,6 +51,21 @@ function assembleNewEmail(eName) {
     // Create image list item 
     createListItem(eName, new_image);
 
+    // Remove email specific button 
+    let newBTN = document.createElement("button");
+    newBTN.setAttribute("id", formattedId + "-btn");
+    newBTN.setAttribute("class", "btn");
+    newBTN.innerHTML = "DELETE EMAIL";
+    document.getElementById(formattedId).appendChild(newBTN);
+
+    // Button specific event listener
+    document.getElementById(formattedId + "-btn").addEventListener("click", () => { 
+        usersAndImages = [];
+        const element = document.getElementById(formattedId);
+        element.remove(); 
+        console.log(document.getElementById("recieve-box").children)
+        if (document.getElementById("recieve-box").children == HTMLCollection) { document.getElementById("delete-all-btn").remove() }
+    })
 }
 
 function addElement(eInput) {
@@ -54,6 +74,22 @@ function addElement(eInput) {
         fetchImage()
     }
     else {
+        if (usersAndImages.length == 1) {
+             // Delete all button
+            let newBTN = document.createElement("button");
+            newBTN.setAttribute("id", "delete-all-btn");
+            newBTN.setAttribute("class", "btn");
+            newBTN.innerHTML = "DELETE ALL";
+            document.getElementById("recieve-box-container").appendChild(newBTN);
+            
+            // Delete all button on event listener
+            $("#delete-all-btn").on("click", () => { 
+                usersAndImages = [];
+                removeHTML("recieve-box");
+                const element = document.getElementById("delete-all-btn");
+                element.remove(); 
+            })
+        }
         for (i = 0; i < usersAndImages.length; i++) {
             //console.table(usersAndImages);
             //console.log(i);
@@ -76,20 +112,16 @@ function addElement(eInput) {
 
 function formValidation() {
     event.preventDefault();
+    const emailRegex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+
     formData = document.getElementById("email-form").elements;
     emailInput = formData[0].value;
-    //addElement(emailInput);
+
     addElement(emailInput);
     usersAndImages.push([String(emailInput), String(new_image)]);
-    //alert(usersAndImages[0][1]);
-    //usersAndImages.unshift(["dfdfdfdfd", "fdfdfdfdfd"]);
-    //alert(usersAndImages);
-    //console.table(usersAndImages);
-    //console.log(usersAndImages);
-    //console.log(usersAndImages);
-    //console.log(usersAndImages[0]);
-   //console.log(usersAndImages[1]);
-   
+
+
+    
 }
-//console.table(usersAndImages);
+
 
