@@ -1,3 +1,53 @@
 @import "base/index";
 @import "layout/index";
 @import "components/index";
+
+@media (min-width: 450px) {
+    .user-list > li {
+        padding: 10px 10px;
+    }
+}
+
+@media (min-width: 992px) {
+    #content {
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    main {
+        margin-right: 20px;
+        padding-top: 15vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #container {
+        margin-right: 20px;
+    }
+    .box {
+        width: 400px;
+    }
+    #send-box {
+        margin-right: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .box {
+        width: 500px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .box {
+        width: 600px;
+    }
+}
+
+@media (min-width: 1800px) {
+    .box {
+        width: 800px;
+    }
+    #send-box {
+        margin-right: 40px;
+    }
+}

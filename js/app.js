@@ -64,9 +64,15 @@ function assembleNewEmail(eName) {
         const element = document.getElementById(formattedId);
         element.remove(); 
         console.log(document.getElementById("recieve-box").children)
-        if (document.getElementById("recieve-box").children == HTMLCollection) { document.getElementById("delete-all-btn").remove() }
+        if (document.getElementById("recieve-box").children.length == 0) { 
+            document.getElementById("delete-all-btn").remove(
+            added = false
+            ) 
+        }
     })
 }
+
+let added = false
 
 function addElement(eInput) {
     if (usersAndImages.length == 0) {
@@ -75,20 +81,22 @@ function addElement(eInput) {
     }
     else {
         // Add the delete all button when there is two sibling elements
-        if ($(".user-container").siblings().length == 2) {
+        if ($(".user-container").siblings().length == 2 && added == false) {
              // Delete all button
             let newBTN = document.createElement("button");
             newBTN.setAttribute("id", "delete-all-btn");
             newBTN.setAttribute("class", "btn");
             newBTN.innerHTML = "DELETE ALL";
             document.getElementById("recieve-box-container").appendChild(newBTN);
-            
+            added = true;
+
             // Delete all button on event listener
             $("#delete-all-btn").on("click", () => { 
                 usersAndImages = [];
                 removeHTML("recieve-box");
                 const element = document.getElementById("delete-all-btn");
                 element.remove(); 
+                added = false
             })
         }
         for (i = 0; i < usersAndImages.length; i++) {
