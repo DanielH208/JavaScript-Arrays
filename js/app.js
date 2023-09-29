@@ -74,7 +74,8 @@ function addElement(eInput) {
         fetchImage()
     }
     else {
-        if (usersAndImages.length == 1) {
+        // Add the delete all button when there is two sibling elements
+        if ($(".user-container").siblings().length == 2) {
              // Delete all button
             let newBTN = document.createElement("button");
             newBTN.setAttribute("id", "delete-all-btn");
@@ -117,8 +118,22 @@ function formValidation() {
     formData = document.getElementById("email-form").elements;
     emailInput = formData[0].value;
 
-    addElement(emailInput);
-    usersAndImages.push([String(emailInput), String(new_image)]);
+    //alert(emailRegex.test(emailInput))
+
+    if (emailInput == "") {
+        document.getElementById("error-messages").innerHTML = "Please Input A Value";
+        $("#email-input").css("border-color", "red");
+    } 
+    else if (emailRegex.test(emailInput) == false) {
+        document.getElementById("error-messages").innerHTML = "Please Enter A Valid Email";
+        $("#email-input").css("border-color", "red");
+    }
+    else {
+        addElement(emailInput);
+        usersAndImages.push([String(emailInput), String(new_image)]);
+        $("#email-input").css("border-color", "transparent");
+        document.getElementById("error-messages").innerHTML = "";
+    }
 
 
     
