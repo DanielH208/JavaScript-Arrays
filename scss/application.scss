@@ -2,9 +2,41 @@
 @import "layout/index";
 @import "components/index";
 
+
+@media (min-width: 375px) {
+    .box {
+        width: 300px;
+    }
+    main {
+        display: flex;
+        justify-content: center;
+    }
+    input { 
+        width: 250px;
+    }
+}
+
 @media (min-width: 450px) {
     .user-list > li {
         padding: 10px 10px;
+    }
+}
+
+@media (min-width: 600px) {
+    .box {
+        width: 400px;
+    }
+    input { 
+        width: 300px;
+    }
+}
+
+@media (min-width: 600px) {
+    .box {
+        width: 500px;
+    }
+    header > h1 {
+        font-size: 45px;
     }
 }
 
@@ -16,9 +48,7 @@
     main {
         margin-right: 20px;
         padding-top: 15vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        align-items: center;    
     }
     #container {
         margin-right: 20px;
@@ -28,6 +58,9 @@
     }
     #send-box {
         margin-right: 20px;
+    }
+    .box > h1 {
+        font-size: 50px;
     }
 }
 
@@ -40,6 +73,9 @@
 @media (min-width: 1400px) {
     .box {
         width: 600px;
+    }
+    header > h1 {
+        font-size: 55px;
     }
 }
 

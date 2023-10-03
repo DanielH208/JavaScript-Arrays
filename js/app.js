@@ -24,13 +24,14 @@ function removeHTML(id) {
 
 
 function createListItem(eName, image) {
+    console.table(usersAndImages);
     let formattedId = eName.replaceAll(".", "-");
     let newItem = document.createElement("li");
     newItem.innerHTML = "<img src='" + image + "'>" ;
     document.getElementById(formattedId + "-list").appendChild(newItem);
 }
 
-function assembleNewEmail(eName) {
+function assembleNewEmail(eName, image) {
     // Create Div container
     let formattedId = eName.replaceAll(".", "-");
     console.log(formattedId)
@@ -49,7 +50,10 @@ function assembleNewEmail(eName) {
     document.getElementById(formattedId).appendChild(newUL);
 
     // Create image list item 
-    createListItem(eName, new_image);
+    let newItem = document.createElement("li");
+    newItem.innerHTML = "<img src='" + image + "'>";
+    document.getElementById(formattedId + "-list").appendChild(newItem);
+    //createListItem(eName, new_image);
 
     // Remove email specific button 
     let newBTN = document.createElement("button");
@@ -60,24 +64,40 @@ function assembleNewEmail(eName) {
 
     // Button specific event listener
     document.getElementById(formattedId + "-btn").addEventListener("click", () => { 
-        usersAndImages = [];
+
+        // Provide new array to usersAndImages excluding all the deleted email items
+        usersAndImages = usersAndImages.filter((item) => {
+            return (item[0] != eName)
+        })
+
         const element = document.getElementById(formattedId);
         element.remove(); 
         console.log(document.getElementById("recieve-box").children)
         if (document.getElementById("recieve-box").children.length == 0) { 
-            document.getElementById("delete-all-btn").remove(
-            added = false
-            ) 
+                const deleteBTN = document.getElementById("delete-all-btn");
+                deleteBTN.remove(); 
+                added = false        
         }
+        
+        
+        console.table(usersAndImages);
+        console.table(usersAndImages.length);
     })
+
+        // ADD FOR LOOP TO LOOP THROUGH LIST AND REMOVE EACH ITEM WITH A MATCHING EMAIL / eName
+        // CURRENTLY THE PROGRAM CLEARS THE WHOLE LIST EACH TIME A EMAIL IS DELETED MEANING THAT EACH NEW IMAGE AFTER COUNTS AS A NEW EMAIL SO IT CLEARS THE OLD ONE.
+      
+        //usersAndImages = [];
+
 }
 
 let added = false
 
 function addElement(eInput) {
     if (usersAndImages.length == 0) {
-        assembleNewEmail(eInput)
-        fetchImage()
+        console.log("first value");
+        assembleNewEmail(eInput, new_image);
+        fetchImage();
     }
     else {
         // Add the delete all button when there is two sibling elements
@@ -99,6 +119,7 @@ function addElement(eInput) {
                 added = false
             })
         }
+        //let found = false;
         for (i = 0; i < usersAndImages.length; i++) {
             //console.table(usersAndImages);
             //console.log(i);
@@ -107,12 +128,14 @@ function addElement(eInput) {
                 createListItem(eInput, new_image)
                 fetchImage();
                 console.log(usersAndImages.length);
+                //found = true;
                 return;
             } 
+            
         }
-        assembleNewEmail(eInput)
+        assembleNewEmail(eInput, new_image)
         fetchImage()
-
+    
     }
 }
     
@@ -139,6 +162,7 @@ function formValidation() {
     else {
         addElement(emailInput);
         usersAndImages.push([String(emailInput), String(new_image)]);
+        console.table(usersAndImages)
         $("#email-input").css("border-color", "transparent");
         document.getElementById("error-messages").innerHTML = "";
     }

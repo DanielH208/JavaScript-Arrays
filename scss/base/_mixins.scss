@@ -1,0 +1,19 @@
+@mixin button ($width, $colour, $border-colour) {
+    width: $width;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    padding: 10px 5px;
+    border: solid 6px;
+    background-color: $colour;
+    border-color: $border-colour;
+    border-radius: 15px;
+}
+
+@mixin flex-container ($direction, $wrap) {
+    display: flex; 
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+}
