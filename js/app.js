@@ -2,7 +2,9 @@
 function fetchImage() {
     fetch("https://picsum.photos/200")
     .then (result => {
+        // Set the new image to the global variable so the functions can use it
         new_image = result.url;
+        // Set the source of the image tag to the new image url
         document.getElementById("image-slot").src = new_image;
     })
     .catch(err => console.log(err))
@@ -13,16 +15,18 @@ let usersAndImages = [];
 let formData;
 let emailInput;
 
+// On page load refresh the image
 document.addEventListener("load", fetchImage());
 
 $("#new-image-btn").on("click", () => { fetchImage() });
 
+// Reusable function for removing the html of a passed in element
 function removeHTML(id) {
     let parent = document.getElementById(id);
     parent.innerHTML = "";
 }
 
-
+// Create a new list item and add it to the existing parent unordered list
 function createListItem(eName, image) {
     let formattedId = eName.replaceAll(".", "-");
     let newItem = document.createElement("li");
@@ -30,10 +34,10 @@ function createListItem(eName, image) {
     document.getElementById(formattedId + "-list").appendChild(newItem);
 }
 
-function assembleNewEmail(eName) {
+// Create a new unordered list and add a list item
+function assembleNewEmail(eName, image) {
     // Create Div container
     let formattedId = eName.replaceAll(".", "-");
-    console.log(formattedId)
     let newDiv = document.createElement("div");
     newDiv.setAttribute("id", formattedId);
     newDiv.setAttribute("class", "user-container");
@@ -49,76 +53,94 @@ function assembleNewEmail(eName) {
     document.getElementById(formattedId).appendChild(newUL);
 
     // Create image list item 
-    createListItem(eName, new_image);
+    let newItem = document.createElement("li");
+    newItem.innerHTML = "<img src='" + image + "'>";
+    document.getElementById(formattedId + "-list").appendChild(newItem);
+    //createListItem(eName, new_image);
 
-    // Remove email specific button 
+    // Add email specific remove button 
     let newBTN = document.createElement("button");
     newBTN.setAttribute("id", formattedId + "-btn");
     newBTN.setAttribute("class", "btn");
+    newBTN.setAttribute("class", "new-btn");
     newBTN.innerHTML = "DELETE EMAIL";
     document.getElementById(formattedId).appendChild(newBTN);
 
     // Button specific event listener
     document.getElementById(formattedId + "-btn").addEventListener("click", () => { 
-        usersAndImages = [];
+
+        // Provide new array to usersAndImages excluding all the deleted email items
+        usersAndImages = usersAndImages.filter((item) => {
+            return (item[0] != eName)
+        })
+
         const element = document.getElementById(formattedId);
         element.remove(); 
-        console.log(document.getElementById("recieve-box").children)
-        if (document.getElementById("recieve-box").children == HTMLCollection) { document.getElementById("delete-all-btn").remove() }
+        // If no emails are left also delete the delete all button
+        if (document.getElementById("recieve-box").children.length == 0) { 
+                const deleteBTN = document.getElementById("delete-all-btn");
+                deleteBTN.remove(); 
+                added = false        
+        }
     })
 }
 
+// Global variable for checking if the delete all button exists
+let added = false
+
 function addElement(eInput) {
+    // The first item inside the array will always be a new email address
     if (usersAndImages.length == 0) {
-        assembleNewEmail(eInput)
-        fetchImage()
+        assembleNewEmail(eInput, new_image);
+        fetchImage();
     }
     else {
-        // Add the delete all button when there is two sibling elements
-        if ($(".user-container").siblings().length == 2) {
-             // Delete all button
+        // Add the delete all button when there is two sibling elements / two email addresses
+        if ($(".user-container").siblings().length == 2 && added == false) {
+             // Add delete all button
             let newBTN = document.createElement("button");
             newBTN.setAttribute("id", "delete-all-btn");
             newBTN.setAttribute("class", "btn");
+            newBTN.setAttribute("class", "new-btn");
             newBTN.innerHTML = "DELETE ALL";
             document.getElementById("recieve-box-container").appendChild(newBTN);
-            
+            added = true;
+
             // Delete all button on event listener
             $("#delete-all-btn").on("click", () => { 
                 usersAndImages = [];
                 removeHTML("recieve-box");
                 const element = document.getElementById("delete-all-btn");
                 element.remove(); 
+                added = false
             })
         }
+        // Iterate through 2d array checking wether the inputted email address has already been added
         for (i = 0; i < usersAndImages.length; i++) {
-            //console.table(usersAndImages);
-            //console.log(i);
-            console.log("user images: " + usersAndImages[i][0]);
             if (usersAndImages[i][0] == eInput) {
+                // If so add a list item to the existing email address unordered list
                 createListItem(eInput, new_image)
                 fetchImage();
-                console.log(usersAndImages.length);
                 return;
             } 
+            
         }
-        assembleNewEmail(eInput)
+        // If no matching address is found in the array then add a new unorderd list and list element
+        assembleNewEmail(eInput, new_image)
         fetchImage()
-
+    
     }
 }
     
-    
-
-
 function formValidation() {
+    // Prevent page from refreshing on form submit
     event.preventDefault();
     const emailRegex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
+    // Assign the form data to a variable
     formData = document.getElementById("email-form").elements;
+    // Pull out the inputted email address value
     emailInput = formData[0].value;
-
-    //alert(emailRegex.test(emailInput))
 
     if (emailInput == "") {
         document.getElementById("error-messages").innerHTML = "Please Input A Value";
@@ -130,13 +152,11 @@ function formValidation() {
     }
     else {
         addElement(emailInput);
+        // Add validated email and image as an item to the 2d array
         usersAndImages.push([String(emailInput), String(new_image)]);
         $("#email-input").css("border-color", "transparent");
         document.getElementById("error-messages").innerHTML = "";
-    }
-
-
-    
+    }   
 }
 
 

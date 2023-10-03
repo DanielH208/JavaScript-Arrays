@@ -1,7 +1,7 @@
+@use "../base/mixins" as mixin;
+
 form {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    @include mixin.flex-container(column, nowrap);
     text-align: center;
     padding: 10px 20px; 
 }

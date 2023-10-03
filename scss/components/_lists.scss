@@ -1,0 +1,12 @@
+@use "../base/mixins" as mixin;
+
+.user-list {
+    @include mixin.flex-container(row, wrap);
+    list-style-type: none;
+    width: 100%;
+    padding-left: 0px;
+}
+
+.user-list > li {
+    flex-grow: 1;
+}
