@@ -116,6 +116,20 @@ input, button {
   flex-grow: 1;
 }
 
+.new-btn {
+  width: 150px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  padding: 10px 5px;
+  border: solid 6px;
+  background-color: #2A9D8F;
+  border-color: #005F73;
+  border-radius: 15px;
+}
+
 #new-image-btn {
   width: 150px;
   margin-top: 5px;

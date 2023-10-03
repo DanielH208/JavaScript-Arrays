@@ -24,7 +24,6 @@ function removeHTML(id) {
 
 
 function createListItem(eName, image) {
-    console.table(usersAndImages);
     let formattedId = eName.replaceAll(".", "-");
     let newItem = document.createElement("li");
     newItem.innerHTML = "<img src='" + image + "'>" ;
@@ -34,7 +33,6 @@ function createListItem(eName, image) {
 function assembleNewEmail(eName, image) {
     // Create Div container
     let formattedId = eName.replaceAll(".", "-");
-    console.log(formattedId)
     let newDiv = document.createElement("div");
     newDiv.setAttribute("id", formattedId);
     newDiv.setAttribute("class", "user-container");
@@ -59,6 +57,7 @@ function assembleNewEmail(eName, image) {
     let newBTN = document.createElement("button");
     newBTN.setAttribute("id", formattedId + "-btn");
     newBTN.setAttribute("class", "btn");
+    newBTN.setAttribute("class", "new-btn");
     newBTN.innerHTML = "DELETE EMAIL";
     document.getElementById(formattedId).appendChild(newBTN);
 
@@ -72,30 +71,18 @@ function assembleNewEmail(eName, image) {
 
         const element = document.getElementById(formattedId);
         element.remove(); 
-        console.log(document.getElementById("recieve-box").children)
         if (document.getElementById("recieve-box").children.length == 0) { 
                 const deleteBTN = document.getElementById("delete-all-btn");
                 deleteBTN.remove(); 
                 added = false        
         }
-        
-        
-        console.table(usersAndImages);
-        console.table(usersAndImages.length);
     })
-
-        // ADD FOR LOOP TO LOOP THROUGH LIST AND REMOVE EACH ITEM WITH A MATCHING EMAIL / eName
-        // CURRENTLY THE PROGRAM CLEARS THE WHOLE LIST EACH TIME A EMAIL IS DELETED MEANING THAT EACH NEW IMAGE AFTER COUNTS AS A NEW EMAIL SO IT CLEARS THE OLD ONE.
-      
-        //usersAndImages = [];
-
 }
 
 let added = false
 
 function addElement(eInput) {
     if (usersAndImages.length == 0) {
-        console.log("first value");
         assembleNewEmail(eInput, new_image);
         fetchImage();
     }
@@ -106,6 +93,7 @@ function addElement(eInput) {
             let newBTN = document.createElement("button");
             newBTN.setAttribute("id", "delete-all-btn");
             newBTN.setAttribute("class", "btn");
+            newBTN.setAttribute("class", "new-btn");
             newBTN.innerHTML = "DELETE ALL";
             document.getElementById("recieve-box-container").appendChild(newBTN);
             added = true;
@@ -121,14 +109,9 @@ function addElement(eInput) {
         }
         //let found = false;
         for (i = 0; i < usersAndImages.length; i++) {
-            //console.table(usersAndImages);
-            //console.log(i);
-            console.log("user images: " + usersAndImages[i][0]);
             if (usersAndImages[i][0] == eInput) {
                 createListItem(eInput, new_image)
                 fetchImage();
-                console.log(usersAndImages.length);
-                //found = true;
                 return;
             } 
             
@@ -162,7 +145,6 @@ function formValidation() {
     else {
         addElement(emailInput);
         usersAndImages.push([String(emailInput), String(new_image)]);
-        console.table(usersAndImages)
         $("#email-input").css("border-color", "transparent");
         document.getElementById("error-messages").innerHTML = "";
     }

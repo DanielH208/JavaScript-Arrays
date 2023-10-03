@@ -1,9 +1,12 @@
 @use "../base/mixins" as mixin;
 
-#new-image-btn { 
+.new-btn {
     @include mixin.button(150px, #2A9D8F, #005F73);
 }
 
+#new-image-btn { 
+    @include mixin.button(150px, #2A9D8F, #005F73);
+}
 
 #send-button {
     @include mixin.button(125px, #2A9D8F, #005F73);
