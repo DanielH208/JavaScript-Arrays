@@ -60,7 +60,7 @@ header {
 }
 
 .box, #recieve-box-container {
-  background-color: aqua;
+  background-color: #0A9396;
   border-radius: 10px;
 }
 
@@ -142,6 +142,7 @@ input, button {
   background-color: #2A9D8F;
   border-color: #005F73;
   border-radius: 15px;
+  cursor: pointer;
 }
 
 #send-button {

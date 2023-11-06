@@ -6,6 +6,7 @@
 
 #new-image-btn { 
     @include mixin.button(150px, #2A9D8F, #005F73);
+    cursor: pointer;
 }
 
 #send-button {

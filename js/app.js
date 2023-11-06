@@ -20,6 +20,16 @@ document.addEventListener("load", fetchImage());
 
 $("#new-image-btn").on("click", () => { fetchImage() });
 
+function checkExisting(email, image) {
+    for(i = 0; i < usersAndImages.length; i++) {
+        if(usersAndImages[i][0] == email && usersAndImages[i][1] == image) {
+            console.log("caught");
+            return true;
+        }
+    }
+    return false;
+}
+
 // Reusable function for removing the html of a passed in element
 function removeHTML(id) {
     let parent = document.getElementById(id);
@@ -92,7 +102,6 @@ function addElement(eInput) {
     // The first item inside the array will always be a new email address
     if (usersAndImages.length == 0) {
         assembleNewEmail(eInput, new_image);
-        fetchImage();
     }
     else {
         // Add the delete all button when there is two sibling elements / two email addresses
@@ -120,14 +129,12 @@ function addElement(eInput) {
             if (usersAndImages[i][0] == eInput) {
                 // If so add a list item to the existing email address unordered list
                 createListItem(eInput, new_image)
-                fetchImage();
                 return;
             } 
             
         }
         // If no matching address is found in the array then add a new unorderd list and list element
-        assembleNewEmail(eInput, new_image)
-        fetchImage()
+        assembleNewEmail(eInput, new_image);
     
     }
 }
@@ -142,7 +149,12 @@ function formValidation() {
     // Pull out the inputted email address value
     emailInput = formData[0].value;
 
-    if (emailInput == "") {
+    
+    if (checkExisting(emailInput, new_image) == true) {
+        document.getElementById("error-messages").innerHTML = "Image already assigned to that email";
+        $("#email-input").css("border-color", "red");
+    }
+    else if (emailInput == "") {
         document.getElementById("error-messages").innerHTML = "Please Input A Value";
         $("#email-input").css("border-color", "red");
     } 
